@@ -4,6 +4,7 @@ import {RegisterController} from './Controlers/register.controller';
 import {LoginController} from './Controlers/login.controller';
 import {LogoutController} from './Controlers/logout.controller';
 import {UsersController} from './Controlers/users.controller';
+import {ChangeController} from './Controlers/change.controller';
 import {UserService} from './Services/user.service';
 import {JwtModule} from "@nestjs/jwt";
 import { ConfigModule } from '@nestjs/config';
@@ -20,7 +21,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         }),
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
     ],
-    controllers: [RegisterController, LoginController, LogoutController, UsersController],
+    controllers: [RegisterController, LoginController, LogoutController, UsersController, ChangeController],
     providers: [UserService],
 })
 export class UserModule {

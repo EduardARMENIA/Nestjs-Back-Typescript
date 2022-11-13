@@ -49,19 +49,7 @@ export class UsersController {
         }
     }   
 
-@Post('/:id/change-password')
-    async postcomm(@Param('id') id, @Body() password: any, @Res() res: Response, @Req() req: Request)  {
-     try {
-        const user = await this.userService.findOne({ _id: id })
-        const hashedPassword = await bcrypt.hash(password.content, 12);
-        const create2 = await this.userService.update(user._id,{password: hashedPassword})
-        console.log(create2)
-        res.json(create2)
 
-     } catch (error) {
-        return 'error';
-     }
-   }    
 }
 
 
