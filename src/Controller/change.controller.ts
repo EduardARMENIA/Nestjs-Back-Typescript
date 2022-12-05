@@ -1,5 +1,5 @@
 import {BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, Param, Headers} from '@nestjs/common';
-import {UserService} from '../Services/user.service';
+import {UserService} from '.././Service/user.service';
 import * as bcrypt from 'bcrypt';
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from 'express';
@@ -21,9 +21,7 @@ export class ChangeController {
         console.log(content.content)
         let jwts = headers.authorization;
         const cookie = jwts;
-        const data = await this.jwtService.verifyAsync(cookie);
-        
-
+        const data = await this.jwtService.verifyAsync(cookie);        
         if (!data) {
                 throw new UnauthorizedException();
         }
@@ -32,8 +30,7 @@ export class ChangeController {
         const hashedPassword = await bcrypt.hash(content.content, 12);
         const create2 = await this.userService.update(user._id,{password: hashedPassword})
         res.json(create2)
-
-      } catch (error) {
+     } catch (error) {
         return 'error';
       }
    }     

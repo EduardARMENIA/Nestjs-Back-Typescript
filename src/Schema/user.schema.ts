@@ -7,7 +7,7 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({ required: false })
+  @Prop({ required: false, default: 'profile-10d5d.png' })
   img: [{
     type:string
   }]

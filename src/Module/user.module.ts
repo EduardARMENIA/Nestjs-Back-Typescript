@@ -1,16 +1,14 @@
 import {Module} from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {RegisterController} from './Controlers/register.controller';
-import {LoginController} from './Controlers/login.controller';
-import {LogoutController} from './Controlers/logout.controller';
-import {UsersController} from './Controlers/users.controller';
-import {ChangeController} from './Controlers/change.controller';
-import {ProfileController} from './Controlers/profile.controller';
-import {UserService} from './Services/user.service';
+import {RegisterController} from '.././Controller/register.controller';
+import {LoginController} from '.././Controller/login.controller';
+import {LogoutController} from '.././Controller/logout.controller';
+import {UsersController} from '.././Controller/users.controller';
+import {ChangeController} from '.././Controller/change.controller';
+import {ProfileController} from '.././Controller/profile.controller';
+import {UserService} from '.././Service/user.service';
 import {JwtModule} from "@nestjs/jwt";
 import { ConfigModule } from '@nestjs/config';
-import { User, UserSchema } from './schemas/user.schema';
-import { Posts, PostSchema } from './schemas/Post';
+import { User, UserSchema } from '.././Schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({

@@ -1,13 +1,9 @@
 import {BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, Param, Patch} from '@nestjs/common';
-import {AppService} from '../Services/post.service';
-import {CommentService} from '../Services/comment.service';
-import * as bcrypt from 'bcrypt';
+import {AppService} from '.././Service/post.service';
+import {CommentService} from '.././Service/comment.service';
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from 'express';
-import { Posts } from '../schemas/post';
-import { Comment } from '../schemas/Comment';
-import { CreateCatDto } from '../dto/create-user.dto';
-import { LoginCatDto } from '../dto/login-user.dto';
+import { Comment } from '.././Schema/Comment';
 import * as mongoose from 'mongoose';
 
 

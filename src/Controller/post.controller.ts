@@ -1,12 +1,12 @@
 import {BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, Param, UseInterceptors, UploadedFile, Headers} from '@nestjs/common';
-import {AppService} from '../Services/post.service';
+import {AppService} from '.././Service/post.service';
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from 'express';
-import { Posts } from '../schemas/post';
-import { Comment } from '../schemas/Comment';
+import { Posts } from '.././Schema/post';
+import { Comment } from '.././Schema/Comment';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
+import { editFileName, imageFileFilter } from '.././utils/file-upload.utils';
 
 
 
@@ -21,9 +21,9 @@ export class PostController {
     @Get('post')
     async postId(@Res() res: Response, @Req() req: Request, @Headers() headers)  {
      try {
-        console.log(headers.authorization)
         const post = await this.appService.find().populate([{path:'comments',  model:'Comment',}]);
         res.send(post)
+        console.log(post)
      } catch (error) {
         return 'error';
      }
@@ -55,15 +55,14 @@ export class PostController {
        fileFilter: imageFileFilter,
      }),
     )
-    async uploadedFile(@Body() body: any, @UploadedFile() file, @Res() res: Response, @Req() req: Request) {
-     let x = file.filename
-     const cookie = req.cookies['jwt'];
-
-     const data = await this.jwtService.verifyAsync(cookie);
-
-     console.log(data['name'])
-     const users = await this.appService.create({author: data['name'],img:file.filename, title:body.title, content:body.content, comments:undefined, likes:undefined});
-     return ({ message: 'success' });
+    async uploadedFile(@Body() body: any, @UploadedFile() file, @Res() res: Response, @Req() req: Request,  @Headers() headers) {
+       console.log(file.filename) 
+       let jwts = headers.authorization;
+       const cookie = jwts;
+       const data = await this.jwtService.verifyAsync(cookie); 
+       console.log(data['name'])     
+       const users = await this.appService.create({author: data['name'],img:file.filename, title:body.title, content:body.content, comments:undefined, likes:undefined});
+       return ({ message: 'success' });
   }
 
    
@@ -76,7 +75,6 @@ export class PostController {
   @Get('/:name/porfile_post')
   async Porfile_posts(@Param('name') name, @Res() res) {
     const post = await this.appService.finds({author:name}).populate([{path:'comments',  model:'Comment',}]);
-    console.log(post)
     res.send(post)
   }
 

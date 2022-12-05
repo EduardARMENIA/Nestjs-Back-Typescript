@@ -1,10 +1,10 @@
 import {BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, Param, UseInterceptors, UploadedFile, Headers} from '@nestjs/common';
-import {UserService} from '../Services/user.service';
+import {UserService} from '.././Service/user.service';
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from 'express';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
+import { editFileName, imageFileFilter } from '.././utils/file-upload.utils';
 
 
 
@@ -29,18 +29,15 @@ export class UsersController {
    }
 @Get('userss')
     async user(@Res() res: Response,
-               @Req() req: Request) {
+               @Req() req: Request, @Headers() headers) {
         try {
-            const cookie = req.cookies['jwt'];
-            console.log(cookie)
-
-            const data = await this.jwtService.verifyAsync(cookie);
-
+            let jwts = headers.authorization;
+            const cookie = jwts;
+            const data = await this.jwtService.verifyAsync(cookie);             
             if (!data) {
                 throw new UnauthorizedException();
             }
             const user = await this.userService.findOne({_id: data['id']});
-
             res.send([user]);
         } catch (e) {
             console.log(e);

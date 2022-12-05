@@ -1,9 +1,8 @@
 import {BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, Param} from '@nestjs/common';
-import {UserService} from '../Services/user.service';
+import {UserService} from '.././Service/user.service';
 import * as bcrypt from 'bcrypt';
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from 'express';
-import { CreateCatDto } from '../dto/create-user.dto';
 import { LoginCatDto } from '../dto/login-user.dto';
 
 
@@ -21,6 +20,8 @@ export class LoginController {
         @Body() req: LoginCatDto,
         @Res({passthrough: true}) response: Response
     ) {
+        console.log(req.email)
+        console.log(req.password)
         const user = await this.userService.findOne({email: req.email});
 
         if (!user) {

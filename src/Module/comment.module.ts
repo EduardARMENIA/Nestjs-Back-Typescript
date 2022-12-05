@@ -1,11 +1,7 @@
 import {Module} from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {CommentController} from '../Controlers/commnet.controller';
-import {CommentService} from '../Services/comment.service';
 import {JwtModule} from "@nestjs/jwt";
 import { ConfigModule } from '@nestjs/config';
-import { Posts, PostSchema } from '../schemas/Post';
-import { Comment, CommentSchema } from '../schemas/Comment';
+import { Comment, CommentSchema } from '.././Schema/Comment';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({

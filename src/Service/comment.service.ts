@@ -1,6 +1,4 @@
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-import { Comment, CommentDocument } from '../schemas/Comment';
+import { Comment, CommentDocument } from '.././Schema/Comment';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';

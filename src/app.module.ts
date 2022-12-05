@@ -1,13 +1,13 @@
 import {Module} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user-info-login-register/user.module';
-import { PostModule } from './post-comment-like/Modules/post.module';
-import { CommentModule } from './post-comment-like/Modules/comment.module';
+import { UserModule } from './Module/user.module';
+import { PostModule } from './Module/post.module';
+import { CommentModule } from './Module/comment.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
    imports: [
-    MongooseModule.forRoot('mongodb://localhost/social-media-best'),
+    MongooseModule.forRoot('mongodb://localhost/clone22'),
     UserModule,
     PostModule,
     CommentModule

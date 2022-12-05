@@ -1,9 +1,9 @@
 import {BadRequestException, Body, Controller, Get, Post, Req, Res, UnauthorizedException, Param} from '@nestjs/common';
-import {UserService} from '../Services/user.service';
+import {UserService} from '.././Service/user.service';
 import * as bcrypt from 'bcrypt';
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from 'express';
-import { Posts } from '../schemas/post';
+import { Posts } from '.././Schema/post';
 import { CreateCatDto } from '../dto/create-user.dto';
 import { LoginCatDto } from '../dto/login-user.dto';
 

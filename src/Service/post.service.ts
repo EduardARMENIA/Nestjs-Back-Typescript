@@ -1,19 +1,14 @@
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-
-import { User, UserDocument } from '../schemas/user.schema';
-import { Posts, PostsDocument } from '../schemas/Post';
-
+import { Posts, PostsDocument } from '.././Schema/Post';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 @Injectable()
 
-export class UserService {
-  @InjectModel(User.name) private model: Model<UserDocument>;
+export class AppService {
+  @InjectModel(Posts.name) private model: Model< PostsDocument>;
 
-  create(name: User) {
+  create(name: Posts) {
     return this.model.create(name);
   }
 
@@ -22,11 +17,15 @@ export class UserService {
   }
 
   findOne(item:any) {
-    return this.model.findOne(item);
+    return this.model.findOne(item)
   }
 
   update(id: string, data: any) {
     return this.model.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  finds(item:any) {
+    return this.model.find(item)
   }
     
 }
