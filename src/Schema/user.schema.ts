@@ -7,10 +7,12 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({ required: false, default: 'profile-10d5d.png' })
-  img: [{
-    type:string
-  }]
+  @Prop({ required: false })
+  img: [
+    {
+      type: string;
+    },
+  ];
 
   @Prop({ required: true })
   name: string;
@@ -20,7 +22,6 @@ export class User {
 
   @Prop({ required: false })
   password: string;
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,5 +1,5 @@
 export class CreateCatDto {
-  img: [{ type: string}];
+  img: [{ type: string }];
   name: string;
   email: string;
   password: string;

@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 @Injectable()
-
 export class UserService {
   @InjectModel(User.name) private model: Model<UserDocument>;
 
@@ -16,15 +15,11 @@ export class UserService {
     return this.model.find();
   }
 
-  findOne(item:any) {
+  findOne(item: any) {
     return this.model.findOne(item);
   }
 
   update(id: string, data: any) {
     return this.model.findByIdAndUpdate(id, data, { new: true });
   }
-    
 }
-
-
-

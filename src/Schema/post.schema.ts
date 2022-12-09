@@ -8,34 +8,36 @@ export type PostsDocument = Posts & Document;
 @Schema({ timestamps: true })
 export class Posts {
   @Prop({ required: false })
-  author:string;
+  author: string;
 
   @Prop({ required: false })
-  img: [{
-    type:string
-  }]
+  img: [
+    {
+      type: string;
+    },
+  ];
 
   @Prop({ required: false })
-  likes: [{
-    type: mongoose.Schema.Types.ObjectId; 
-  }]
-  
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId;
+    },
+  ];
+
   @Prop({ required: false })
-  title:string;
+  title: string;
 
   @Prop({ required: false })
   content: string;
 
-  @Prop({ required: false})
-  comments: [{
-    type: mongoose.Schema.Types.ObjectId;
-    ref: 'Comment';
-    default: undefined
-  }]
-
-
-  
-
+  @Prop({ required: false })
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId;
+      ref: 'Comment';
+      default: undefined;
+    },
+  ];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Posts);
