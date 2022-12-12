@@ -47,7 +47,7 @@ export class UsersController {
       const user = await this.userService.findOne({ _id: data['id'] });
       return [user];
     } catch (e) {
-      console.log(e);
+      return e;
     }
   }
 }
