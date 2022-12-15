@@ -1,12 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
   Post,
-  Req,
   Res,
-  UnauthorizedException,
   Param,
   UseInterceptors,
   UploadedFile,
@@ -14,8 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from '.././Service/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { Response, Request } from 'express';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '.././utils/file-upload.utils';
 
@@ -41,10 +37,8 @@ export class ProfileController {
     @UploadedFile() file,
     @Headers() headers,
   ) {
-    const jwts = headers.authorization;
-    const cookie = jwts;
-    const data = await this.jwtService.verifyAsync(cookie);
-    const profile_img = await this.userService.update(data['id'], {
+    const data = await this.jwtService.verifyAsync(headers.authorization);
+    await this.userService.update(data['id'], {
       img: file.filename,
     });
     return { message: 'success' };

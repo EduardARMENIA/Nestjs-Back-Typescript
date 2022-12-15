@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PostController } from '.././Controller/post.controller';
 import { CommentController } from '.././Controller/commnet.controller';
-import { AppService } from '.././Service/post.service';
+import { PostService } from '.././Service/post.service';
 import { CommentService } from '.././Service/comment.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
@@ -22,6 +22,6 @@ import { MulterModule } from '@nestjs/platform-express';
     MulterModule.register({ dest: './files' }),
   ],
   controllers: [PostController, CommentController],
-  providers: [AppService, CommentService],
+  providers: [PostService, CommentService],
 })
 export class PostModule {}

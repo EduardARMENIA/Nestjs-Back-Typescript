@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class AppService {
+export class PostService {
   @InjectModel(Posts.name) private model: Model<PostsDocument>;
 
   create(name: Posts) {

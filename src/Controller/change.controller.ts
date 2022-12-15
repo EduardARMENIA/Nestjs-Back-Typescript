@@ -1,19 +1,13 @@
 import {
-  BadRequestException,
   Body,
   Controller,
-  Get,
   Post,
-  Req,
-  Res,
   UnauthorizedException,
-  Param,
   Headers,
 } from '@nestjs/common';
 import { UserService } from '.././Service/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Response, Request } from 'express';
 
 @Controller('api')
 export class ChangeController {
@@ -22,20 +16,19 @@ export class ChangeController {
     private jwtService: JwtService,
   ) {}
   @Post('/change-password')
-  async postcomm(@Body() content: any, @Headers() headers) {
+  async ChangePassowrd(@Body() content: any, @Headers() headers) {
     try {
-      const jwts = headers.authorization;
-      const cookie = jwts;
-      const data = await this.jwtService.verifyAsync(cookie);
+      const data = await this.jwtService.verifyAsync(headers.authorization);
       if (!data) {
         throw new UnauthorizedException();
       }
       const user = await this.userService.findOne({ name: data['name'] });
-      const hashedPassword = await bcrypt.hash(content.content, 12);
-      const create2 = await this.userService.update(user._id, {
+      const cont = content.content;
+      const hashedPassword = await bcrypt.hash(cont, 12);
+      await this.userService.update(user._id, {
         password: hashedPassword,
       });
-      return create2;
+      return 'done';
     } catch (error) {
       return 'error';
     }

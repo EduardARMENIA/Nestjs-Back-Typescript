@@ -1,39 +1,35 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
   Post,
-  Req,
   Res,
-  UnauthorizedException,
   Param,
   UseInterceptors,
   UploadedFile,
   Headers,
 } from '@nestjs/common';
-import { AppService } from '.././Service/post.service';
+import { PostService } from '.././Service/post.service';
 import { JwtService } from '@nestjs/jwt';
-import { Response, Request } from 'express';
 import { Posts } from '.././Schema/post.schema';
 import { Comment } from '.././Schema/comment.schema';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '.././utils/file-upload.utils';
 
 @Controller('api')
 export class PostController {
   constructor(
-    private readonly appService: AppService,
+    private readonly PostService: PostService,
     private jwtService: JwtService,
   ) {}
 
   @Get('post')
-  async postId(@Headers() headers) {
+  async Posts() {
     try {
-      const post = await this.appService
-        .find()
-        .populate([{ path: 'comments', model: 'Comment' }]);
+      const post = await this.PostService.find().populate([
+        { path: 'comments', model: 'Comment' },
+      ]);
       return post;
     } catch (error) {
       return 'error';
@@ -41,8 +37,8 @@ export class PostController {
   }
 
   @Post('post')
-  async register(@Body() title: Posts) {
-    const users = await this.appService.create(title);
+  async CreatePost(@Body() title: Posts) {
+    await this.PostService.create(title);
 
     return { message: 'success' };
   }
@@ -62,10 +58,9 @@ export class PostController {
     @UploadedFile() file,
     @Headers() headers,
   ) {
-    const jwts = headers.authorization;
-    const cookie = jwts;
-    const data = await this.jwtService.verifyAsync(cookie);
-    const users = await this.appService.create({
+    const data = await this.jwtService.verifyAsync(headers.authorization);
+    await this.PostService.create({
+      profile: undefined,
       author: data['name'],
       img: file.filename,
       title: body.title,
@@ -82,10 +77,10 @@ export class PostController {
   }
 
   @Get('/:name/porfile_post')
-  async Porfile_posts(@Param('name') name) {
-    const post = await this.appService
-      .finds({ author: name })
-      .populate([{ path: 'comments', model: 'Comment' }]);
+  async PorfilePosts(@Param('name') name) {
+    const post = await this.PostService.finds({ author: name }).populate([
+      { path: 'comments', model: 'Comment' },
+    ]);
     return post;
   }
 }
