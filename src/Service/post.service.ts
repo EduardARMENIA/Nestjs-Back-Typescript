@@ -26,4 +26,8 @@ export class PostService {
   finds(item: any) {
     return this.model.find(item);
   }
+
+  delate(item: any) {
+    return this.model.findOneAndRemove(item);
+  }
 }

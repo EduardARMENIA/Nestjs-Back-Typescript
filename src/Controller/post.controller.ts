@@ -76,6 +76,52 @@ export class PostController {
     return res.sendFile(id, { root: './files' });
   }
 
+  @Post('/:id/post_delate')
+  async DelatePost(@Param('id') id, @Res() res, @Headers() headers) {
+    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const post = await this.PostService.findOne({ _id: id });
+    if (data['name'] === post.author) {
+      await this.PostService.delate({ _id: post._id });
+      return { message: 'success' };
+    } else {
+      return { message: 'something went wrong' };
+    }
+  }
+
+  @Post('/:id/description_change')
+  async ChangeDescription(
+    @Param('id') id,
+    @Res() res,
+    @Body() body: any,
+    @Headers() headers,
+  ) {
+    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const post = await this.PostService.findOne({ _id: id });
+    if (data['name'] === post.author) {
+      await this.PostService.update(post._id, { content: body.content });
+      return { message: 'success' };
+    } else {
+      return { message: 'something went wrong' };
+    }
+  }
+
+  @Post('/:id/title_change')
+  async ChangeTitle(
+    @Param('id') id,
+    @Res() res,
+    @Body() body: any,
+    @Headers() headers,
+  ) {
+    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const post = await this.PostService.findOne({ _id: id });
+    if (data['name'] === post.author) {
+      await this.PostService.update(post._id, { title: body.title });
+      return { message: 'success' };
+    } else {
+      return { message: 'something went wrong' };
+    }
+  }
+
   @Get('/:name/porfile_post')
   async PorfilePosts(@Param('name') name) {
     const post = await this.PostService.finds({ author: name }).populate([
