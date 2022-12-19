@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { RegisterController } from '.././Controller/register.controller';
 import { LoginController } from '.././Controller/login.controller';
-import { LogoutController } from '.././Controller/logout.controller';
 import { UsersController } from '.././Controller/users.controller';
 import { ChangeController } from '.././Controller/change.controller';
 import { ProfileController } from '.././Controller/profile.controller';
@@ -23,7 +22,6 @@ import { MongooseModule } from '@nestjs/mongoose';
   controllers: [
     RegisterController,
     LoginController,
-    LogoutController,
     UsersController,
     ChangeController,
     ProfileController,
