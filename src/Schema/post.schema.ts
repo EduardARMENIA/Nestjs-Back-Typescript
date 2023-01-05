@@ -8,9 +8,9 @@ export type PostsDocument = Posts & Document;
 @Schema({ timestamps: true })
 export class Posts {
   @Prop({ required: false })
-  profile: [
+  author_id: [
     {
-      type: string;
+      type: mongoose.Schema.Types.ObjectId;
     },
   ];
 
@@ -24,12 +24,6 @@ export class Posts {
     },
   ];
 
-  @Prop({ required: false })
-  likes: [
-    {
-      type: mongoose.Schema.Types.ObjectId;
-    },
-  ];
 
   @Prop({ required: false })
   title: string;
@@ -42,6 +36,15 @@ export class Posts {
     {
       type: mongoose.Schema.Types.ObjectId;
       ref: 'Comment';
+      default: undefined;
+    },
+  ];
+
+  @Prop({ required: false })
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId;
+      ref: 'Like';
       default: undefined;
     },
   ];

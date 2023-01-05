@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { RegisterController } from '.././Controller/register.controller';
-import { LoginController } from '.././Controller/login.controller';
-import { UsersController } from '.././Controller/users.controller';
-import { ChangeController } from '.././Controller/change.controller';
-import { ProfileController } from '.././Controller/profile.controller';
-import { UserService } from '.././Service/user.service';
+import { RegisterController } from '../Controller/register.controller';
+import { LoginController } from '../Controller/login.controller';
+import { UsersController } from '../Controller/users.controller';
+import { ChangeController } from '../Controller/change.controller';
+import { ProfileController } from '../Controller/profile.controller';
+import { UserService } from '../Service/user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { User, UserSchema } from '.././Schema/user.schema';
+import { User, UserSchema } from '../Schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { APP_GUARD } from '@nestjs/core'
+import { AuthGuard } from '../guard/auth.guard';
+
 
 @Module({
   imports: [

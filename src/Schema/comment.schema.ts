@@ -8,6 +8,12 @@ export type CommentDocument = Comment & Document;
 @Schema({ timestamps: true })
 export class Comment {
   @Prop({ required: true })
+  author_id: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ required: true })
+  author: string;
+
+  @Prop({ required: true })
   content: string;
 
   @Prop({ required: false, ref: 'Posts' })

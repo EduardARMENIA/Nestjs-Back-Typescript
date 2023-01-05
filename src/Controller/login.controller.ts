@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { UserService } from '.././Service/user.service';
+import { UserService } from '../Service/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginCatDto } from '../dto/login-user.dto';
@@ -12,6 +12,7 @@ export class LoginController {
   ) {}
   @Post('login')
   async Login(@Body() req: LoginCatDto) {
+    console.log('donee')
     const user = await this.userService.findOne({ email: req.email });
 
     if (!user) {

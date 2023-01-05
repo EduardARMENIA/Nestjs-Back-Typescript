@@ -1,4 +1,4 @@
-import { Posts, PostsDocument } from '.././Schema/post.schema';
+import { Posts, PostsDocument } from '../Schema/post.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';

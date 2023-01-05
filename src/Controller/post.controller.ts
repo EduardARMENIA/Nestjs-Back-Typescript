@@ -2,20 +2,25 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
+  Param,
   Post,
   Res,
-  Param,
-  UseInterceptors,
   UploadedFile,
-  Headers,
+  UseInterceptors,
+  UseGuards
 } from '@nestjs/common';
-import { PostService } from '.././Service/post.service';
+import { PostService } from '../Service/post.service';
 import { JwtService } from '@nestjs/jwt';
-import { Posts } from '.././Schema/post.schema';
-import { Comment } from '.././Schema/comment.schema';
+import { Posts } from '../Schema/post.schema';
+import { Comment } from '../Schema/comment.schema';
+import { Like } from '../Schema/like.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from '.././utils/file-upload.utils';
+import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
+import { User } from '../decorator/header.decorator';
+import { AuthGuard } from '../guard/auth.guard';
+
 
 @Controller('api')
 export class PostController {
@@ -27,10 +32,9 @@ export class PostController {
   @Get('post')
   async Posts() {
     try {
-      const post = await this.PostService.find().populate([
-        { path: 'comments', model: 'Comment' },
+      return await this.PostService.find().populate([
+        { path: 'comments', model: 'Comment'},
       ]);
-      return post;
     } catch (error) {
       return 'error';
     }
@@ -44,6 +48,7 @@ export class PostController {
   }
 
   @Post('post_image')
+  @UseGuards(AuthGuard)
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -56,17 +61,17 @@ export class PostController {
   async uploadedFile(
     @Body() body: any,
     @UploadedFile() file,
-    @Headers() headers,
+    @User() user
   ) {
-    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const data = await this.jwtService.verifyAsync(user);
     await this.PostService.create({
-      profile: undefined,
+      author_id: data['id'],
       author: data['name'],
       img: file.filename,
       title: body.title,
       content: body.content,
       comments: undefined,
-      likes: undefined,
+      likes: undefined
     });
     return { message: 'success' };
   }
@@ -77,8 +82,9 @@ export class PostController {
   }
 
   @Post('/:id/post_delate')
-  async DelatePost(@Param('id') id, @Res() res, @Headers() headers) {
-    const data = await this.jwtService.verifyAsync(headers.authorization);
+  @UseGuards(AuthGuard)
+  async DelatePost(@Param('id') id, @Res() res, @Headers() headers, @User() user) {
+    const data = await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
     if (data['name'] === post.author) {
       await this.PostService.delate({ _id: post._id });
@@ -94,8 +100,9 @@ export class PostController {
     @Res() res,
     @Body() body: any,
     @Headers() headers,
+    @User() user
   ) {
-    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const data = await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
     if (data['name'] === post.author) {
       await this.PostService.update(post._id, { content: body.content });
@@ -106,13 +113,15 @@ export class PostController {
   }
 
   @Post('/:id/title_change')
+  @UseGuards(AuthGuard)
   async ChangeTitle(
     @Param('id') id,
     @Res() res,
     @Body() body: any,
     @Headers() headers,
+    @User() user
   ) {
-    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const data = await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
     if (data['name'] === post.author) {
       await this.PostService.update(post._id, { title: body.title });
@@ -121,7 +130,6 @@ export class PostController {
       return { message: 'something went wrong' };
     }
   }
-
   @Get('/:name/porfile_post')
   async PorfilePosts(@Param('name') name) {
     const post = await this.PostService.finds({ author: name }).populate([
@@ -129,4 +137,13 @@ export class PostController {
     ]);
     return post;
   }
+
+
+  @Get('/:data/search')
+  async  searchPosts(@Param('data') data) {
+    return await this.PostService.finds({$or:[{title:{'$regex':data}},{content:{'$regex':data}},{author:{'$regex':data}}]}).populate([
+      { path: 'comments', model: 'Comment' },
+    ]);
+  }
+
 }

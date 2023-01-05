@@ -1,11 +1,14 @@
 import {
   Controller,
   Get,
-  UnauthorizedException,
   Headers,
+  UnauthorizedException,
+  UseGuards
 } from '@nestjs/common';
-import { UserService } from '.././Service/user.service';
+import { UserService } from '../Service/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '../guard/auth.guard';
+import { User } from '../decorator/header.decorator';
 
 @Controller('api')
 export class UsersController {
@@ -17,21 +20,20 @@ export class UsersController {
   @Get('users')
   async Users() {
     try {
-      const user = await this.userService.find();
-      return user;
+      return await this.userService.find();
     } catch (error) {
       return 'error';
     }
   }
   @Get('usersid')
-  async UserId(@Headers() headers) {
+  @UseGuards(AuthGuard)
+  async UserId(@User() user) {
     try {
-      const data = await this.jwtService.verifyAsync(headers.authorization);
+      const data = await this.jwtService.verifyAsync(user);
       if (!data) {
         throw new UnauthorizedException();
       }
-      const user = await this.userService.findOne({ _id: data['id'] });
-      return [user];
+      return [await this.userService.findOne({ _id: data['id'] })];
     } catch (e) {
       return e;
     }

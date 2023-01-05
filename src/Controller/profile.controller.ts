@@ -8,12 +8,15 @@ import {
   UseInterceptors,
   UploadedFile,
   Headers,
+  UseGuards
 } from '@nestjs/common';
-import { UserService } from '.././Service/user.service';
+import { UserService } from '../Service/user.service';
+import { AuthGuard } from '../guard/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from '.././utils/file-upload.utils';
+import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
+import { User } from '../decorator/header.decorator';
 
 @Controller('api')
 export class ProfileController {
@@ -36,8 +39,9 @@ export class ProfileController {
     @Body() body: any,
     @UploadedFile() file,
     @Headers() headers,
+    @User() user
   ) {
-    const data = await this.jwtService.verifyAsync(headers.authorization);
+    const data = await this.jwtService.verifyAsync(user);
     await this.userService.update(data['id'], {
       img: file.filename,
     });

@@ -1,4 +1,4 @@
-import { User, UserDocument } from '.././Schema/user.schema';
+import { User, UserDocument } from '../Schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
