@@ -82,16 +82,11 @@ export class PostController {
   }
 
   @Post('/:id/post_delate')
-  @UseGuards(AuthGuard)
   async DelatePost(@Param('id') id, @Res() res, @Headers() headers, @User() user) {
     const data = await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
-    if (data['name'] === post.author) {
-      await this.PostService.delate({ _id: post._id });
-      return { message: 'success' };
-    } else {
-      return { message: 'something went wrong' };
-    }
+    await this.PostService.delate({ _id: post._id });
+    return { message: 'success' };
   }
 
   @Post('/:id/description_change')
