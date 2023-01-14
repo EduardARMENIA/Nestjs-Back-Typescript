@@ -40,7 +40,6 @@ export class MessagesController {
         throw new UnauthorizedException();
       }
       const result =  await this.messagesService.finds({$or:[{room:req.room2}, {room:req.room1}]})
-      console.log(result)
       return result
     } catch (error) {
       return 'error';

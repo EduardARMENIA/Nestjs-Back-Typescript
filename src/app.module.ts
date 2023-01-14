@@ -10,7 +10,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/social-insta-111112wws1qw'),
+    MongooseModule.forRoot('mongodb://localhost/nuxt-social-media-chat-socket'),
     UserModule,
     PostModule,
     CommentModule,
