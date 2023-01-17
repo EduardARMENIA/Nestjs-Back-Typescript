@@ -8,19 +8,17 @@ import {
   Res,
   UploadedFile,
   UseInterceptors,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from '../Service/post.service';
 import { JwtService } from '@nestjs/jwt';
 import { Posts } from '../Schema/post.schema';
 import { Comment } from '../Schema/comment.schema';
-import { Like } from '../Schema/like.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
 import { User } from '../decorator/header.decorator';
 import { AuthGuard } from '../guard/auth.guard';
-
 
 @Controller('api')
 export class PostController {
@@ -33,7 +31,7 @@ export class PostController {
   async Posts() {
     try {
       return await this.PostService.find().populate([
-        { path: 'comments', model: 'Comment'},
+        { path: 'comments', model: 'Comment' },
       ]);
     } catch (error) {
       return 'error';
@@ -58,11 +56,7 @@ export class PostController {
       fileFilter: imageFileFilter,
     }),
   )
-  async uploadedFile(
-    @Body() body: any,
-    @UploadedFile() file,
-    @User() user
-  ) {
+  async uploadedFile(@Body() body: any, @UploadedFile() file, @User() user) {
     const data = await this.jwtService.verifyAsync(user);
     await this.PostService.create({
       author_id: data['id'],
@@ -71,7 +65,7 @@ export class PostController {
       title: body.title,
       content: body.content,
       comments: undefined,
-      likes: undefined
+      likes: undefined,
     });
     return { message: 'success' };
   }
@@ -82,8 +76,13 @@ export class PostController {
   }
 
   @Post('/:id/post_delate')
-  async DelatePost(@Param('id') id, @Res() res, @Headers() headers, @User() user) {
-    const data = await this.jwtService.verifyAsync(user);
+  async DelatePost(
+    @Param('id') id,
+    @Res() res,
+    @Headers() headers,
+    @User() user,
+  ) {
+    await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
     await this.PostService.delate({ _id: post._id });
     return { message: 'success' };
@@ -95,7 +94,7 @@ export class PostController {
     @Res() res,
     @Body() body: any,
     @Headers() headers,
-    @User() user
+    @User() user,
   ) {
     const data = await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
@@ -114,7 +113,7 @@ export class PostController {
     @Res() res,
     @Body() body: any,
     @Headers() headers,
-    @User() user
+    @User() user,
   ) {
     const data = await this.jwtService.verifyAsync(user);
     const post = await this.PostService.findOne({ _id: id });
@@ -133,12 +132,14 @@ export class PostController {
     return post;
   }
 
-
   @Get('/:data/search')
-  async  searchPosts(@Param('data') data) {
-    return await this.PostService.finds({$or:[{title:{'$regex':data}},{content:{'$regex':data}},{author:{'$regex':data}}]}).populate([
-      { path: 'comments', model: 'Comment' },
-    ]);
+  async searchPosts(@Param('data') data) {
+    return await this.PostService.finds({
+      $or: [
+        { title: { $regex: data } },
+        { content: { $regex: data } },
+        { author: { $regex: data } },
+      ],
+    }).populate([{ path: 'comments', model: 'Comment' }]);
   }
-
 }

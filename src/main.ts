@@ -7,10 +7,10 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableCors({
-    origin:'http://localhost:3000',
+    origin: 'http://localhost:3000',
     credentials: true,
-    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe,  Authorization,  my-custom-header'
-
+    allowedHeaders:
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe,  Authorization,  my-custom-header',
   });
   await app.listen(process.env.PORT);
 }

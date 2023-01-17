@@ -1,9 +1,8 @@
 import {
   Controller,
   Get,
-  Headers,
   UnauthorizedException,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../Service/user.service';
 import { JwtService } from '@nestjs/jwt';

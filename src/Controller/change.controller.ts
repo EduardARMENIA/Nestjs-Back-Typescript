@@ -4,14 +4,13 @@ import {
   Post,
   UnauthorizedException,
   Headers,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../Service/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '../guard/auth.guard';
 import { User } from '../decorator/header.decorator';
-
 
 @Controller('api')
 export class ChangeController {

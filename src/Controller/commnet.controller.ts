@@ -20,7 +20,7 @@ export class CommentController {
     try {
       const data = await this.jwtService.verifyAsync(user);
       const post = await this.postservice.findOne({ _id: id });
-      console.log(post)
+      console.log(post);
       const create = await this.commentService.create({
         author_id: data['id'],
         author: data['name'],
@@ -36,34 +36,36 @@ export class CommentController {
     }
   }
 
-
   @Post('/:id/like')
   async PostLike(@Param('id') id, @Body() content: any, @User() user) {
-    try {      
+    try {
       const data = await this.jwtService.verifyAsync(user);
       const post = await this.postservice.findOne({ _id: id });
-      const lf = await this.postservice.findOne({_id: post._id, likes: data['id']});
-      console.log(post._id)
-      if (lf === null){
-         console.log(data['name'])
-         const create = await this.likeservice.create({
+      const lf = await this.postservice.findOne({
+        _id: post._id,
+        likes: data['id'],
+      });
+      console.log(post._id);
+      if (lf === null) {
+        await this.likeservice.create({
           username: data['name'],
           like: data['id'],
-          post: post._id
-         });
-         await this.postservice.update(post._id, {$push: { likes: data['id'] }});
-      }else {
-         await this.postservice.update(post._id, {$pull: { likes: data['id'] }});
-      }   
+          post: post._id,
+        });
+        await this.postservice.update(post._id, {
+          $push: { likes: data['id'] },
+        });
+      } else {
+        await this.postservice.update(post._id, {
+          $pull: { likes: data['id'] },
+        });
+      }
       const post1 = await this.postservice.findOne({ _id: id });
-      return post1.likes.length
-  
+      return post1.likes.length;
     } catch (error) {
       return 'error';
     }
   }
-
-
 
   @Get('/:id/comment')
   async PostId(@Param('id') id) {
@@ -72,9 +74,9 @@ export class CommentController {
       .populate([{ path: 'comments', model: 'Comment' }]);
   }
 
- @Get('/:id/like')
+  @Get('/:id/like')
   async LikeCount(@Param('id') id) {
-     const post1 = await this.postservice.findOne({ _id: id });
-     return post1.likes.length
+    const post1 = await this.postservice.findOne({ _id: id });
+    return post1.likes.length;
   }
 }

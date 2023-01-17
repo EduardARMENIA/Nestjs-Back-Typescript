@@ -9,9 +9,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { User, UserSchema } from '../Schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { APP_GUARD } from '@nestjs/core'
-import { AuthGuard } from '../guard/auth.guard';
-
 
 @Module({
   imports: [

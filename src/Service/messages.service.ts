@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
-
 @Injectable()
 export class MessagesService {
   @InjectModel(Messages.name) private model: Model<MessagesDocument>;

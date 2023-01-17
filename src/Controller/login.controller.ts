@@ -12,7 +12,7 @@ export class LoginController {
   ) {}
   @Post('login')
   async Login(@Body() req: LoginCatDto) {
-    console.log('donee')
+    console.log('donee');
     const user = await this.userService.findOne({ email: req.email });
 
     if (!user) {

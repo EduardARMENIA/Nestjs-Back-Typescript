@@ -24,7 +24,6 @@ export class Posts {
     },
   ];
 
-
   @Prop({ required: false })
   title: string;
 

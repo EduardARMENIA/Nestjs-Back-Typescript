@@ -8,10 +8,8 @@ import {
   UseInterceptors,
   UploadedFile,
   Headers,
-  UseGuards
 } from '@nestjs/common';
 import { UserService } from '../Service/user.service';
-import { AuthGuard } from '../guard/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -39,7 +37,7 @@ export class ProfileController {
     @Body() body: any,
     @UploadedFile() file,
     @Headers() headers,
-    @User() user
+    @User() user,
   ) {
     const data = await this.jwtService.verifyAsync(user);
     await this.userService.update(data['id'], {

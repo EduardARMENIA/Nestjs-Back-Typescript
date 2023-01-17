@@ -24,7 +24,7 @@ import { User, UserSchema } from '../Schema/user.schema';
     MongooseModule.forFeature([{ name: Posts.name, schema: PostSchema }]),
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
     MongooseModule.forFeature([{ name: Like.name, schema: LikeSchema }]),
-     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MulterModule.register({ dest: './files' }),
   ],
   controllers: [PostController, CommentController],

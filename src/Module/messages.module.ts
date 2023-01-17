@@ -12,7 +12,9 @@ import { MessagesController } from '../Controller/messages.controller';
       secret: process.env.SECRET_KEY,
       signOptions: { expiresIn: '1d' },
     }),
-    MongooseModule.forFeature([{ name: Messages.name, schema: MessagesSchema }]),
+    MongooseModule.forFeature([
+      { name: Messages.name, schema: MessagesSchema },
+    ]),
   ],
   controllers: [MessagesController],
   providers: [MessagesService],

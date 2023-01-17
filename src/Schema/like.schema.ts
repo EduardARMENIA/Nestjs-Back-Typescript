@@ -7,13 +7,13 @@ export type LikeDocument = Like & Document;
 
 @Schema({ timestamps: true })
 export class Like {
-  @Prop({ required: true })  
+  @Prop({ required: true })
   username: string;
 
   @Prop({ required: true })
   like: string;
 
-   @Prop({ required: true, ref: 'Posts' })
+  @Prop({ required: true, ref: 'Posts' })
   post: mongoose.Schema.Types.ObjectId;
 }
 

@@ -7,7 +7,6 @@ import { MessagesModule } from './Module/messages.module';
 import { CommentModule } from './Module/comment.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
-
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/nuxt-social-media-chat-socket'),
@@ -16,7 +15,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     CommentModule,
     LikeModule,
     ChatModule,
-    MessagesModule
+    MessagesModule,
   ],
 })
 export class AppModule {}
