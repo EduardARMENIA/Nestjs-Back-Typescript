@@ -20,10 +20,12 @@ export class CommentController {
     try {
       const data = await this.jwtService.verifyAsync(user);
       const post = await this.postservice.findOne({ _id: id });
-      console.log(post);
+      const users = await this.userservice.findOne({ _id: data['id'] });
+      console.log(users)
       const create = await this.commentService.create({
         author_id: data['id'],
         author: data['name'],
+        author_img: users.img,
         content: content.content,
         post: post._id,
       });

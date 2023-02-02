@@ -9,6 +9,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { User, UserSchema } from '../Schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PostService } from '../Service/post.service';
+import { Posts, PostSchema } from '../Schema/post.schema';
+import { CommentService } from '../Service/comment.service';
+import { Comment, CommentSchema } from '../Schema/comment.schema';
 
 @Module({
   imports: [
@@ -18,6 +22,8 @@ import { MongooseModule } from '@nestjs/mongoose';
       signOptions: { expiresIn: '1d' },
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: Posts.name, schema: PostSchema }]),
+    MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
   ],
   controllers: [
     RegisterController,
@@ -26,6 +32,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     ChangeController,
     ProfileController,
   ],
-  providers: [UserService],
+  providers: [UserService, PostService, CommentService],
 })
 export class UserModule {}
+
+

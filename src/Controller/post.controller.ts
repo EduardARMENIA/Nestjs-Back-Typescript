@@ -19,12 +19,15 @@ import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
 import { User } from '../decorator/header.decorator';
 import { AuthGuard } from '../guard/auth.guard';
+import { UserService } from '../Service/user.service';
+import {Blob} from 'buffer';
 
 @Controller('api')
 export class PostController {
   constructor(
     private readonly PostService: PostService,
     private jwtService: JwtService,
+    private readonly userService: UserService
   ) {}
 
   @Get('post')
@@ -58,20 +61,23 @@ export class PostController {
   )
   async uploadedFile(@Body() body: any, @UploadedFile() file, @User() user) {
     const data = await this.jwtService.verifyAsync(user);
-    await this.PostService.create({
-      author_id: data['id'],
-      author: data['name'],
-      img: file.filename,
-      title: body.title,
-      content: body.content,
-      comments: undefined,
-      likes: undefined,
+    const userfind = await this.userService.findOne({ _id: data['id'] });
+    let postfind1 = await this.PostService.create({
+       author_id: data['id'],
+       author: data['name'],
+       profile_img: userfind.img, 
+       img: file.filename,
+       title: body.title,
+       content: body.content,
+       comments: undefined,
+       likes: undefined,
     });
     return { message: 'success' };
   }
 
   @Get('/:id/post_image')
   seeUploadedFile(@Param('id') id, @Res() res) {
+    console.log(id)
     return res.sendFile(id, { root: './files' });
   }
 

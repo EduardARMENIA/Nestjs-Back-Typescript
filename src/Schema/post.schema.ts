@@ -25,6 +25,13 @@ export class Posts {
   ];
 
   @Prop({ required: false })
+  profile_img: [
+    {
+      type: string;
+    },
+  ];
+
+  @Prop({ required: false })
   title: string;
 
   @Prop({ required: false })

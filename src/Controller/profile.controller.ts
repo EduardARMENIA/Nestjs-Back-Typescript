@@ -15,12 +15,17 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
 import { User } from '../decorator/header.decorator';
+import { PostService } from '../Service/post.service';
+import { CommentService } from '../Service/comment.service';
+
 
 @Controller('api')
 export class ProfileController {
   constructor(
     private readonly userService: UserService,
+    private readonly commentService: CommentService,
     private jwtService: JwtService,
+    private readonly PostService: PostService
   ) {}
 
   @Post('/profile_image')
@@ -42,6 +47,12 @@ export class ProfileController {
     const data = await this.jwtService.verifyAsync(user);
     await this.userService.update(data['id'], {
       img: file.filename,
+    });
+    const userfind = await this.PostService.updateByName({author: data['name']}, {
+      profile_img: file.filename
+    });
+    const comfind = await this.commentService.updateByName({author: data['name']}, {
+      author_img: file.filename
     });
     return { message: 'success' };
   }

@@ -18,4 +18,20 @@ export class CommentService {
   findOne(item: any) {
     return this.model.findOne(item);
   }
+
+  update(id: string, data: any) {
+    return this.model.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  updateByName(id: any, data: any) {
+    return this.model.updateMany(id, data, { new: true });
+  }
+
+  finds(item: any) {
+    return this.model.find(item);
+  }
+
+  delate(item: any) {
+    return this.model.findOneAndRemove(item);
+  }
 }

@@ -13,6 +13,13 @@ export class Comment {
   @Prop({ required: true })
   author: string;
 
+  @Prop({ required: false })
+  author_img: [
+    {
+      type: string;
+    },
+  ]
+
   @Prop({ required: true })
   content: string;
 
